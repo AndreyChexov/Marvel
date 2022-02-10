@@ -1,4 +1,5 @@
 import { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 
 import MarvelService from '../../services/MarvelService';
 import Spinner from '../spiner/Spinner';
@@ -41,7 +42,7 @@ class CharInfo extends Component {
      }
 
 
-     onCharLoaded = (char, loading) => {
+     onCharLoaded = (char) => {
         this.setState({
              char,
              loading: false})
@@ -73,10 +74,11 @@ class CharInfo extends Component {
 
         return (
             <div className="char__info">
+                {content}
                 {skeleton}
                 {errorMes}
                 {spinner}
-                {content}
+                
                    
             </div>
         )
@@ -89,7 +91,7 @@ const View = (char) => {
     const {name, description, thumbnail, homepage, wiki, comics} = char;
     
     return (
-        <Fragment>
+        <>
          <div className="char__basics">
                     <img src={thumbnail} alt={name}/>
                     <div>
@@ -126,9 +128,15 @@ const View = (char) => {
                     
                 </ul>
         
-        </Fragment>
+        </>
 
     )
+}
+
+CharInfo.propTypes = {
+  charId: PropTypes.number,
+  onCharSelected: PropTypes.func.isRequired
+
 }
 
 export default CharInfo;
