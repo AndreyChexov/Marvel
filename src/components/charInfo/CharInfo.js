@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spiner/Spinner';
 import ErrorMessage from '../error/ErrorMessage';
 import Skeleton from '../skeleton/Skeleton';
@@ -10,53 +10,37 @@ import './charInfo.scss';
 
 const CharInfo = (props) => {
 
-    
-
     const [char, setChar] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
+    
      
-     const marvelService = new MarvelService();
+     const {loading, error, getCharacter, clearErrors} = useMarvelService();
 
      
      useEffect(() => {
         updateChar()
+        // eslint-disable-next-line
      }, [props.charId])
 
-    //  useEffect((charId) => {
-    //     if(props.charId !== charId){
-    //         updateChar();
-    //      }
-    //  }, [])
 
      const updateChar = () => {
+         clearErrors();
          const{charId} = props;
          if(!charId) {
              return;
          }
-         onCharLoading();
-         marvelService
-         .getCharacter(charId)
+         
+         
+         getCharacter(charId)
          .then(onCharLoaded)
-         .catch(onError)
+         
      }
 
 
      const onCharLoaded = (char) => {
          setChar(char);
-         setLoading(false)    
-        
+            
      }
-
-     const onError = () => {
-            setLoading(false);
-            setError(true);
-     }
-
-    const  onCharLoading = () => {
-        setLoading(true);
-    }
-
+     
 
         const skeleton = char || loading || error ? null : <Skeleton/>
         const errorMes = error? <ErrorMessage/> : null;
@@ -101,6 +85,7 @@ const View = (char) => {
                 </div>
                 <div className="char__comics">Comics:</div>
                 <ul className="char__comics-list">
+                    
                     {comics.length > 0 ? null: 'There is no comics :('}
                     {
                         comics.map((item, i) => {
