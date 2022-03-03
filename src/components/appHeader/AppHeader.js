@@ -20,7 +20,7 @@ const AppHeader = () => {
                     to='/'>Characters</NavLink></li>
                     /
                     <li><NavLink 
-                    end
+    
                     style={({isActive}) =>({color : isActive ? 'red' : 'black'})}
                     to='/comics'>Comics</NavLink></li>
                 </ul>
